@@ -12,6 +12,7 @@ const COLORS = [
 const SPACE = ' ';
 
 let el = document.getElementById("graph");
+const loadingEl = document.getElementById("loading");
 let tipTitle = document.getElementById("tipTitle");
 let tipCoord = document.getElementById("tipCoord");
 let operatePlane = document.getElementById("operatePlane");
@@ -31,8 +32,6 @@ let fnList = buildFunctionList();
 let title = query['title'] || '';
 const DEF_MARGIN = { left: 40, right: 20, top: title ? 40 : 20, bottom: 20 };
 let option = buildOption();
-
-console.log(query, fnList)
 
 let plot = functionPlot(option);
 
@@ -146,8 +145,6 @@ function buildOption() {
         opt.annotations = query['ats'];
     }
 
-    console.log(opt)
-
 
     return opt;
 }
@@ -208,6 +205,7 @@ function initOperatePlane() {
     } else {
         hiddenTip.removeAttribute('checked');
     }
+    clearTip();
 }
 
 /**
@@ -264,18 +262,44 @@ function transformAxisTickLabel(plot, dir) {
     }
 }
 
+function setDisableZoom() {
+    query['dz'] = +disableZoom.checked;
+    rerender();
+}
+
+function setHiddenTip() {
+    query['tip'] = +hiddenTip.checked;
+    rerender();
+}
+
+function loaded() {
+    el.style.opacity = 1;
+    loadingEl.style.opacity = 0;
+}
+
+function loading() {
+    el.style.opacity = 0;
+    loadingEl.style.opacity = 1;
+}
+
+function rerender() {
+    loading();
+    contentsBounds = el.getBoundingClientRect();
+    width = contentsBounds.width;
+    height = contentsBounds.height;
+    initOperatePlane();
+    option = buildOption();
+    plot = functionPlot(option);
+    loaded();
+}
 
 
 document.addEventListener("DOMContentLoaded", function() {
     const resizeObserver = new ResizeObserver(() => {
-        contentsBounds = el.getBoundingClientRect();
-        width = contentsBounds.width;
-        height = contentsBounds.height;
-        option = buildOption();
-        plot = functionPlot(option);
-        console.log("aaaa");
+        rerender();
     });
     resizeObserver.observe(document.body);
     start();
+    loaded();
 });
 

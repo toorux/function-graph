@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <title>Function Graph</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .loading {
+            position: fixed;
+            z-index: 9999;
+            background: #fff;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 400ms;
+        }
+
+        #graph {
+            opacity: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,11 +33,11 @@
         </div>
         <div class="operate-plane" id="operatePlane">
             <section>
-                <input type="checkbox" name="disableZoom" id="disableZoom" checked>
+                <input type="checkbox" name="disableZoom" id="disableZoom" checked onchange="setDisableZoom()">
                 <label for="disableZoom">禁止缩放</label>
             </section>
             <section>
-                <input type="checkbox" name="hiddenTip" id="hiddenTip">
+                <input type="checkbox" name="hiddenTip" id="hiddenTip" onchange="setHiddenTip()">
                 <label for="hiddenTip">隐藏Tip</label>
             </section>
             <section class="open-in-new-tab">
@@ -32,6 +51,9 @@
                 </a>
             </section>
         </div>
+    </div>
+    <div class="loading" id="loading">
+        <img src="../loading.svg" alt="">
     </div>
     <script src="function-plot.js"></script>
     <script src="../global.js"></script>
