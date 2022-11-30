@@ -274,12 +274,16 @@ function setHiddenTip() {
 
 function loaded() {
     el.style.opacity = 1;
+    loadingEl.style.display = 'block';
     loadingEl.style.opacity = 0;
 }
 
 function loading() {
     el.style.opacity = 0;
     loadingEl.style.opacity = 1;
+    setTimeout(() => {
+        loadingEl.style.display = 'none';
+    }, 400);
 }
 
 function rerender() {
